@@ -17,10 +17,12 @@ A full-stack web-based Hospital Management System built using **Django**, design
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login Page](screenshots/loginpage.png)
+![Login Page](screenshots/patientlogin.png)
 
 ### 🏠 Admin Dashboard
 ![Admin Dashboard](screenshots/admin_page.png)
+(screenshots/admin_page1.png)
+(screenshots/admin_page2.png)
 
 ### 👩‍⚕️ Doctor Dashboard
 ![Doctor Dashboard](screenshots/doctor_page.png)
