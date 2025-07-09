@@ -17,16 +17,16 @@ A full-stack web-based Hospital Management System built using **Django**, design
 ## 📸 Screenshots
 
 ### 🔐 Login Page
-![Login Page](screenshots/login.png)
+![Login Page](screenshots/loginpage.png)
 
 ### 🏠 Admin Dashboard
-![Admin Dashboard](screenshots/admin_dashboard.png)
+![Admin Dashboard](screenshots/admin_page.png)
 
 ### 👩‍⚕️ Doctor Dashboard
-![Doctor Dashboard](screenshots/doctor_dashboard.png)
+![Doctor Dashboard](screenshots/doctor_page.png)
 
 ### 🧑 Patient Panel
-![Patient Panel](screenshots/patient_panel.png)
+![Patient Panel](screenshots/patient_page.png)
 
 > Make sure your screenshots are stored in a folder named `screenshots/` in your repository root.
 
