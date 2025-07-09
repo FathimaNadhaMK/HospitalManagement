@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>Register Doctor | MedTrack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f0ff, #d4e7f5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+
+ .form-logo {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .form-logo img {
+      height: 60px;
+      width: auto;
+    }
+
+    .form {
+      background-color: #fff;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 800px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 105, 217, 0.1);
+    }
+
+    .form h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #0077cc;
+      font-size: 28px;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+    }
+
+    .form-section h3 {
+      color: #444;
+      margin-bottom: 15px;
+      font-size: 18px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .form-group {
+      flex: 1 1 45%;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="password"],
+    input[type="file"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      background-color: #fafafa;
+      transition: border 0.3s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #007bff;
+      background-color: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #007bff, #0056b3);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #0056b3, #004099);
+    }
+
+    p {
+      text-align: center;
+      margin-top: 10px;
+      color: #d9534f;
+    }
+
+    @media (max-width: 700px) {
+      .form-row {
+        flex-direction: column;
+      }
+
+      .form-group {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="form">
+       <!-- Logo section -->
+    <div class="form-logo">
+      <img src="{% static 'img/logo.png' %}" alt="MedTrack Logo">
+    </div>
+    <h1>Register Doctor</h1>
+    <form method="post" enctype="multipart/form-data" action="">
+      {% csrf_token %}
+
+      <div class="form-section">
+        <h3>Personal Information</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+          </div>
+          <div class="form-group">
+            <label for="firstname">First Name:</label>
+            <input type="text" id="firstname" name="firstname" placeholder="First Name" required>
+          </div>
+          <div class="form-group">
+            <label for="lastname">Last Name:</label>
+            <input type="text" id="lastname" name="lastname" placeholder="Last Name" required>
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender" placeholder="Gender">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Professional Details</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+          </div>
+          <div class="form-group">
+            <label for="qualification">Qualification:</label>
+            <input type="text" id="qualification" name="qualification" placeholder="e.g., MBBS, MD" required>
+          </div>
+
+         <div class="form-group">
+    <label for="department">Department:</label>
+    <select name="department" id="department" required>
+        <option value="">-- Select Department --</option>
+        {% for i in dept_list %}
+            <option value="{{ dept.id }}">{{ i.name }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+          <div class="form-group">
+            <label for="phone_no">Phone Number:</label>
+            <input type="tel" id="phone_no" name="phone_no" placeholder="10-digit Phone Number" pattern="[0-9]{10}" required>
+          </div>
+          <div class="form-group" style="flex: 1 1 100%;">
+            <label for="profile_summary">Profile Summary:</label>
+            <textarea id="profile_summary" name="profile_summary" placeholder="Brief profile summary" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="image">Profile Picture:</label>
+            <input type="file" id="image" name="image">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Account Credentials</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Create Password:</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+          </div>
+          <div class="form-group">
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit">Register</button>
+
+      <div>
+        {% for msg in messages %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+      </div>
+    </form>
+  </div>
+</body>
+</html>

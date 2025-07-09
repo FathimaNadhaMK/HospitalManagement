@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Reminders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #f9fafb;
+      color: #111827;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #4f46e5;
+    }
+
+    .reminder-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .reminder-item {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .reminder-item:last-child {
+      border-bottom: none;
+    }
+
+    .reminder-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .reminder-time {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+
+    .reminder-icon {
+      color: #8b5cf6;
+      margin-right: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .no-reminders {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 1rem;
+      padding: 2rem 0;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 2rem;
+      text-decoration: none;
+      color: white;
+      background-color: #4f46e5;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .back-btn:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔔 Upcoming Reminders</h1>
+
+    {% if reminders %}
+      <ul class="reminder-list">
+        {% for reminder in reminders %}
+          <li class="reminder-item">
+            <div style="display: flex;">
+              <i class="fas fa-bell reminder-icon"></i>
+              <div>
+                <div class="reminder-title">{{ reminder.title }}</div>
+                <div class="reminder-time">Scheduled for: {{ reminder.time }}</div>
+              </div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="no-reminders">
+        You have no reminders at the moment.
+      </div>
+    {% endif %}
+
+    <a href="{% url 'patientinfo_page' %}" class="back-btn">← Back to Dashboard</a>
+  </div>
+</body>
+</html>

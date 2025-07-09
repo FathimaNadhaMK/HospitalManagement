@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>Doctor Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #8b5cf6;
+      --accent: #ef4444;
+      --light: #f8fafc;
+      --dark: #111827;
+      --text-gray: #6b7280;
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --border: #e5e7eb;
+    }
+
+    body.dark {
+      --bg: #111827;
+      --card: #1f2937;
+      --text-gray: #9ca3af;
+      --light: #1f2937;
+      --dark: #f8fafc;
+      --border: #374151;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--dark);
+      animation: fadeInBody 1s ease;
+      transition: background-color 0.5s ease, color 0.5s ease;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem 1.5rem;
+      border-bottom-left-radius: 1rem;
+      border-bottom-right-radius: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .logout_btn {
+      background: var(--accent);
+      border: none;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+    .change{
+    color:#dc2626;
+
+    }
+
+    .logout_btn:hover {
+      background: #dc2626;
+    }
+
+    .main-content {
+      max-width: 1100px;
+      margin: 2rem auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+      padding: 0 1.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      position: relative;
+      animation: fadeInCard 1s ease-in-out forwards;
+      opacity: 0;
+      transition: background-color 0.5s ease;
+    }
+
+    @keyframes fadeInCard {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .doctor-profile {
+      text-align: center;
+    }
+
+    .doctor-profile img {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+      animation: floatImg 3s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    @keyframes floatImg {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .doc-info h2 {
+      margin: 0.5rem 0 0.25rem;
+      font-size: 1.25rem;
+    }
+
+    .tag {
+      background-color: var(--secondary);
+      color: white;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      border-radius: 9999px;
+      display: inline-block;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: var(--text-gray);
+    }
+
+    .detail-item i {
+      color: var(--secondary);
+    }
+
+    .search-title {
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .search-box input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--border);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      background-color: var(--light);
+      color: var(--dark);
+    }
+
+    .search-box input[type="submit"] {
+      background-color: var(--accent);
+      color: white;
+      padding: 0.75rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 0.5rem;
+      width: 100%;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .search-box input[type="submit"]:hover {
+      background-color: #dc2626;
+    }
+
+    .theme-toggle {
+      background-color: var(--light);
+      color: var(--dark);
+      border: 2px solid var(--dark);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--dark);
+      color: var(--light);
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Welcome Dr. {{ doctor_dt.firstname }}</h1>
+  <div style="display: flex; gap: 1rem; align-items: center;">
+    <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    <a href="{% url 'doctor_logout' %}" class="logout_btn">
+      <i class="fas fa-power-off"></i> Logout
+    </a>
+  </div>
+  <a href="{% url 'change' %}" class="change" >
+             <span class="btn-card">change password/username</span>
+            </a>
+
+</div>
+
+<div class="main-content">
+  <div class="card doctor-profile">
+    <img src="{{ doctor_dt.image.url }}" alt="Doctor Photo">
+    <span class="tag">{{ doctor_dt.department.name }} Specialist</span>
+    <div class="doc-info">
+      <h2>Dr. {{ doctor_dt.firstname }} {{ doctor_dt.lastname }}</h2>
+    </div>
+    <div class="detail-item">
+      <i class="fas fa-phone-alt"></i> {{ doctor_dt.phone_no }}
+    </div>
+    <div class="detail-item">
+      <i class="fas fa-envelope"></i> {{ doctor_dt.email }}
+    </div>
+    <div class="detail-item">
+      <i class="fas fa-info-circle"></i> About: {{ doctor_dt.profile_summary }}
+    </div>
+    <div class="detail-item">
+      <i class="fas fa-info-circle"></i> Available Time: {{ doctor_dt.available_time }}
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="search-title">Patient Search</h3>
+    <form method="POST" class="search-box">
+      {% csrf_token %}
+      <input type="text" name="search" placeholder="Search by patient name..." required>
+      <input type="submit" value="Search Patient">
+    </form>
+  </div>
+</div>
+
+
+<div class="card">
+  <h3 class="search-title">Today's Appointments</h3>
+  {% if appointments %}
+    <ul style="list-style: none; padding: 0;">
+      {% for appointment in appointments %}
+        <li style="padding: 0.75rem 0; border-bottom: 1px solid var(--border);">
+          <strong>{{ appointment.pt_name.firstname }} {{ appointment.pt_name.lastname }}</strong><br>
+          <small><i class="fas fa-clock"></i> {{ appointment.date }} |
+                 <i class="fas fa-user"></i> Token: {{ appointment.token }}</small>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No appointments scheduled for today.</p>
+  {% endif %}
+</div>
+
+<script>
+  function toggleTheme() {
+    document.body.classList.toggle('dark');
+  }
+</script>
+
+</body>
+</html>

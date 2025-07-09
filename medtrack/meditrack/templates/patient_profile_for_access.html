@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <title>Patient Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0288d1;
+      --secondary: #00695c;
+      --accent: #f44336;
+      --bg-light: #f4fafd;
+      --text-dark: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--primary);
+      color: white;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar h2 {
+      font-size: 1.6rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+
+    .sidebar nav a {
+      display: block;
+      margin: 1rem 0;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .sidebar nav a:hover {
+      text-decoration: underline;
+    }
+
+    .logout-btn {
+      background-color: var(--accent);
+      color: white;
+      padding: 10px 14px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logout-btn:hover {
+      background-color: #d32f2f;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .section {
+      background-color: var(--white);
+      padding: 1.8rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .section h3 {
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+      border-left: 4px solid var(--primary);
+      padding-left: 0.75rem;
+      color: var(--primary);
+    }
+
+    .info-group h4 {
+      margin: 0.5rem 0;
+      font-weight: 500;
+    }
+
+    .info-group span {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .prescription, .lab-report {
+      background-color: #f9fafb;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--secondary);
+      border-radius: 8px;
+    }
+
+    .prescription p, .lab-report p {
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      resize: vertical;
+      margin-bottom: 1rem;
+    }
+
+    input[type="submit"] {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: var(--secondary);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .sidebar nav {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div>
+      <h2>{{ patient_dt.firstname }} {{ patient_dt.lastname }}</h2>
+      <nav>
+        <a href="#info">Patient Info</a>
+        <a href="#prescriptions">Prescriptions</a>
+        <a href="#lab">Lab Reports</a>
+      </nav>
+    </div>
+    <a href="{% url 'doctor_logout' %}" class="logout-btn">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Patient Info -->
+    <div class="section" id="info">
+      <h3>Patient Information</h3>
+      <div class="info-group">
+        <h4>Age: <span>{{ patient_dt.age }}</span></h4>
+        <h4>Phone: <span>{{ patient_dt.phone_no }}</span></h4>
+        <h4>Place: <span>{{ patient_dt.place }}</span></h4>
+      </div>
+    </div>
+
+    <!-- Prescriptions -->
+    <div class="section" id="prescriptions">
+      <h3>Prescription History</h3>
+      {% for i in prescription %}
+      <div class="prescription">
+        <strong>Date:</strong> {{ i.date }}<br>
+        <strong>Doctor:</strong> {{ i.doctor_name }}
+        <p>{{ i.prescription|linebreaks }}</p>
+      </div>
+      {% empty %}
+      <p style="color: #888;">No prescriptions found.</p>
+      {% endfor %}
+
+      <form method="post" action="{% url 'add_prescription' %}">
+        {% csrf_token %}
+        <label for="add_pres">Add Prescription:</label>
+        <textarea name="prescription" id="add_pres" placeholder="Type your prescription..." rows="5"></textarea>
+        <input type="submit" value="Add Prescription">
+      </form>
+    </div>
+
+    <!-- Lab Reports -->
+    <div class="section" id="lab">
+      <h3>Lab Reports</h3>
+      {% for report in lab_reports %}
+      <div class="lab-report">
+        <strong>Date:</strong> {{ report.added_date }}<br>
+        <strong>Test Name:</strong> {{ report.test_name }}<br>
+        <p>{{ report.description|linebreaks }}</p>
+        {% if report.image %}
+        <p><a href="{{ report.image.url }}" target="_blank">View Report</a></p>
+        {% endif %}
+      </div>
+      {% empty %}
+      <p style="color: #888;">No lab reports found.</p>
+      {% endfor %}
+    </div>
+
+  </div>
+
+</body>
+</html>

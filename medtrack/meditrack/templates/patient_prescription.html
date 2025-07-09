@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Prescriptions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #e2f8ee;
+      color: #1e293b;
+      padding: 2rem;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0f766e;
+      margin-bottom: 2.5rem;
+    }
+
+    .prescription-paper {
+      background-color: white;
+      border: 2px solid #0f766e;
+      padding: 2rem;
+      max-width: 700px;
+      margin: 2rem auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #0f766e;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .header .clinic-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f766e;
+    }
+
+    .header .date {
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    .details {
+      margin-bottom: 1rem;
+    }
+
+    .details .label {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .prescription-section {
+      background-color: #f9fafb;
+      padding: 1rem 1.2rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      margin-bottom: 2rem;
+    }
+
+    .signature {
+      text-align: right;
+      margin-top: 2rem;
+      font-style: italic;
+      color: #475569;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #64748b;
+      font-size: 1.1rem;
+      margin-top: 3rem;
+    }
+
+    @media print {
+      body {
+        background-color: white;
+        padding: 0;
+      }
+
+      .prescription-paper {
+        border: none;
+        box-shadow: none;
+        margin: 0 auto 2rem;
+        page-break-after: always;
+      }
+
+      .no-print {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>My Prescriptions</h1>
+
+  {% if prescriptions %}
+    {% for p in prescriptions %}
+      <div class="prescription-paper">
+        <div class="header">
+          <div class="clinic-name">Dr. {{ p.doctor_name }}</div>
+          <div class="date">Date: {{ p.date }}</div>
+        </div>
+
+        <div class="details">
+          <p><span class="label">Patient Name:</span> {{ p.patient_name }}</p>
+        </div>
+
+        <div class="details">
+          <p class="label">Prescription:</p>
+          <div class="prescription-section">{{ p.prescription }}</div>
+        </div>
+
+        <div class="signature">Doctor Signature</div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p class="no-data">You have no prescriptions yet.</p>
+  {% endif %}
+
+</body>
+</html>

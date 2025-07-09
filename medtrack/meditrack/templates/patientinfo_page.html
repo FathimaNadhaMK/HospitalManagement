@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Patient Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Outfit', sans-serif;
+      background-color: #f0fdf4;
+      color: #1e293b;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background-color: #0f766e;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      color: white;
+    }
+
+    .sidebar h2 {
+      font-size: 1.3rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar .welcome {
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-weight: 400;
+      color: #d1fae5;
+    }
+
+    .sidebar a {
+      background-color: white;
+      color: #0f766e;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      transition: background-color 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: #d1fae5;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 2rem 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      color: #0f766e;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #d1fae5;
+      padding-bottom: 0.5rem;
+    }
+
+    /* Profile */
+    .patient-card {
+      background-color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 2rem;
+    }
+
+    .detail {
+      margin: 0.3rem 0;
+    }
+
+    .label {
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .change-btn {
+      margin-top: 1rem;
+      grid-column: span 2;
+      justify-self: start;
+      padding: 0.7rem 1.5rem;
+      background-color: #0f766e;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .change-btn:hover {
+      background-color: #0d5e56;
+    }
+
+    /* Doctors */
+    .doctors-sidebar {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      padding: 1.5rem 2rem;
+    }
+
+    .doctor-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .doctor-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #0f766e;
+    }
+
+    .doctor-info {
+      flex: 1;
+    }
+
+    .doctor-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .doctor-dept {
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .doctor-date {
+      display: inline-block;
+      background-color: #d1fae5;
+      color: #065f46;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .doctor-time {
+      font-size: 0.85rem;
+      color: #0f172a;
+      margin-top: 0.3rem;
+    }
+
+    .book-btn {
+      padding: 0.5rem 1rem;
+      background-color: #0f766e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 0.5rem;
+    }
+
+    .book-btn:hover {
+      background-color: #0d5e56;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .patient-card {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Patient Panel</h2>
+    <p class="welcome">Welcome, {{ patient.firstname }} {{ patient.lastname }}</p>
+    <a href="{% url 'lab_report' %}">Upload Lab Reports</a>
+    <a href="{% url 'patient_prescription' %}">View Prescription</a>
+    <a href="{% url 'see_appointments' %}">See My Appointments</a>
+    <a href="{% url 'reminder' %}">Add Reminder</a>
+    <a href="{% url 'patient_login' %}">Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+
+    <!-- Profile Section -->
+    <div>
+      <div class="section-title">Your Profile</div>
+      <div class="patient-card">
+        <div class="detail"><span class="label">Username:</span> {{ patient.username }}</div>
+        <div class="detail"><span class="label">Age:</span> {{ patient.age }}</div>
+        <div class="detail"><span class="label">DOB:</span> {{ patient.dob }}</div>
+        <div class="detail"><span class="label">Gender:</span> {{ patient.gender }}</div>
+        <div class="detail"><span class="label">Email:</span> {{ patient.email }}</div>
+        <div class="detail"><span class="label">Phone:</span> {{ patient.phone_no }}</div>
+        <div class="detail"><span class="label">Bystander Phone:</span> {{ patient.bystandphone_no }}</div>
+        <div class="detail"><span class="label">Place:</span> {{ patient.place }}</div>
+        <div class="detail"><span class="label">Registered On:</span> {{ patient.created_at|date:"F j, Y" }}</div>
+        <a href="{% url 'changepatient' %}" class="change-btn">Change Username / Password</a>
+      </div>
+    </div>
+
+    <!-- Doctors Section -->
+    <div class="doctors-sidebar">
+      <div class="section-title">Doctors Available This Week</div>
+
+      {% if available_doctors %}
+        {% for doc in available_doctors %}
+          <div class="doctor-card">
+            <img src="{{ doc.doctor_name.image.url }}" class="doctor-image" alt="Doctor Image">
+            <div class="doctor-info">
+              <div class="doctor-name">{{ doc.doctor_name.firstname }} {{ doc.doctor_name.lastname }}</div>
+              <div class="doctor-dept">{{ doc.doctor_name.department.name }}</div>
+              <div class="doctor-date">Available on {{ doc.date|date:"l, M j" }}</div>
+              <div class="doctor-time">Time: {{ doc.available_time }}</div>
+              <form data-doctor-id="{{ doc.id }}" method="post">
+  {% csrf_token %}
+  <button type="submit" class="book-btn">Book Appointment</button>
+</form>
+
+                    <div class="modal fade" id="bookingModal" tabindex="-1" role="dialog" aria-labelledby="bookingModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="bookingModalLabel">Appointment Status</h5>
+
+
+
+                                    </div>
+                                    <div class="modal-body" id="bookingModelLabel">
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="{% url 'patientinfo_page' %}" class="btn btn-secondary" data-dismiss="modal">Close</a>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p style="text-align:center; color: #64748b;">No doctors available this week.</p>
+      {% endif %}
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+  $(document).ready(function () {
+    $('.book-btn').click(function (e) {
+      e.preventDefault();
+      var doctorId = $(this).closest('form').data('doctor-id');
+
+      $.ajax({
+        url: "{% url 'book_appointment' 0 %}".replace('0', doctorId),
+        type: 'POST',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        },
+        success: function (response) {
+          $('#bookingModalLabel').text('Appointment Status');
+          $('#bookingModelLabel').html(`
+            <div class="alert alert-${response.status === 'success' ? 'success' : 'danger'}">
+              <p>${response.message}</p>
+            </div>
+          `);
+          var bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+          bookingModal.show();
+        },
+        error: function () {
+          $('#bookingModalLabel').text('Error');
+          $('#bookingModelLabel').html(`
+            <div class="alert alert-danger">
+              <p>An unexpected error occurred. Please try again later.</p>
+            </div>
+          `);
+          var bookingModal = new bootstrap.Modal(document.getElementById('bookingModal'));
+          bookingModal.show();
+        }
+      });
+    });
+  });
+</script>
+
+  </div>
+</body>
+</html>
